@@ -1,4 +1,3 @@
-import pandas as pd
 import seaborn as sns
 
 from src import DATA
