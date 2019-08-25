@@ -2,3 +2,4 @@ data/
 .vscode/
 notebooks/
 *.pyc
+raw.txt
