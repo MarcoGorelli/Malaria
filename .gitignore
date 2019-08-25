@@ -1,5 +1,5 @@
 data/
 .vscode/
-notebooks/
 *.pyc
 raw.txt
+notebooks/.ipynb_checkpoints
