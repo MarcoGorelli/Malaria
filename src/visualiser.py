@@ -1,8 +1,4 @@
-import seaborn as sns
-
 from src import DATA
-
-sns.set()
 
 
 def plot_country_deaths_over_time(country):
