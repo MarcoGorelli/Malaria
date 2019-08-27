@@ -1,1 +1,1 @@
-web: voila --port=$PORT --no-browser notebooks/Deaths.ipynb
+web: gunicorn app:server --timeout 300
