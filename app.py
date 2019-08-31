@@ -5,7 +5,7 @@ import plotly.express as px
 from dash.dependencies import Input, Output
 
 from src.visualiser import plot_country_deaths_over_time
-from src import DEATHS, COORDS
+from src import DEATHS
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
