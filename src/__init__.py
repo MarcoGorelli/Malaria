@@ -6,4 +6,3 @@ DEATHS = pd.read_csv("data/malaria-deaths-by-region.csv").rename(
     },
     axis=1,
 )
-COORDS = pd.read_csv("data/coordinates.csv", sep="\t")
