@@ -14,6 +14,15 @@ server = app.server
 
 colors = {"background": "#111111", "text": "#7FDBFF"}
 
+WORLD_MAP = px.choropleth(
+    DEATHS.query("Code != 'OWID_WRL'").groupby("Code").last().reset_index(),
+    locations="Code",
+    color="Deaths by malaria",
+    hover_name="Entity",  # column to add to hover information
+    color_continuous_scale=px.colors.sequential.Reds,
+).to_dict()
+WORLD_MAP["layout"].update({"clickmode": "event+select"})
+
 app.layout = html.Div(
     style={"backgroundColor": colors["background"]},
     children=[
@@ -28,7 +37,7 @@ app.layout = html.Div(
             style={"textAlign": "center", "color": colors["text"]},
         ),
         dcc.Dropdown(
-            id="country",
+            id="yomama",
             options=[{"label": i, "value": i} for i in DEATHS.Entity.unique()],
             value="Select country",
         ),
@@ -36,16 +45,7 @@ app.layout = html.Div(
             className="row",
             children=[
                 html.Div(
-                    dcc.Graph(
-                        figure=px.choropleth(
-                            DEATHS.groupby("Code").last().reset_index(),
-                            locations="Code",
-                            color="Deaths by malaria",
-                            hover_name="Entity",  # column to add to hover information
-                            color_continuous_scale=px.colors.sequential.Bluered,
-                        ).to_dict()
-                    ),
-                    className="six columns",
+                    dcc.Graph(id="country", figure=WORLD_MAP), className="six columns"
                 ),
                 html.Div(dcc.Graph(id="deaths-by-year"), className="six columns"),
             ],
@@ -56,11 +56,15 @@ app.layout = html.Div(
 
 @app.callback(
     Output(component_id="deaths-by-year", component_property="figure"),
-    [Input(component_id="country", component_property="value")],
+    [Input(component_id="country", component_property="clickData")],
 )
-def update_output_div(input_value="Zambia"):
+def update_output_div(input_value):
+    if not input_value:
+        country = "Zambia"
+    else:
+        country = input_value["points"][0]["hovertext"]
     return px.line(
-        plot_country_deaths_over_time(input_value), x="Year", y="Deaths by malaria"
+        plot_country_deaths_over_time(country), x="Year", y="Deaths by malaria"
     ).to_dict()
 
 
