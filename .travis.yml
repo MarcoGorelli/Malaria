@@ -1,12 +1,15 @@
 language: python
 python:
-  - "3.5"
-  - "3.6"      # current detault Python on Travis CI
-  - "3.7"
+- '3.5'
+- '3.6'
+- '3.7'
 cache: pip
-# command to install dependencies
 install:
-  - pip install -r requirements.txt
-# command to run tests
+- pip install -r requirements.txt
 script:
-  - flake8 --max-line-length=100
+- flake8 --max-line-length=100
+deploy:
+  provider: heroku
+  api_key:
+    secure: vq6whxy/EqFxZhzUnBbzUtuEtUv2nr8IJIxWvufpQX41YnKN/HV+RvwrveQ5YeZy4MBZfEMnXAxDDOqTma1je2WXVNNErfznvvpFjLpF6r3jqtRscaGqlIwhKQSDrPFF2br7VbkWgqdoKvjH9AwdNMUojMcMm4e2rNIUs3+k2ROQDJL8dgphyp1uPZ5ZokftafNwwISQ7Hy65APHKGnp17hkvGX5YNPquQYn6/mkrVzm34eU66hqCY2vPSvbY2ew2LvCTX4jPBcVuXOo1DIKbeFCzW1FJOzpDX7H2KNTMrjXQjXhckt1VwAjgDa7JcyAh3KTdO3dZmItVMtVQ6bTRhPCWSBtVMbJfwRWflO/YYWyCkTFXwaJ39d3pVMXm4DlAJ6HLOecUO0WmtqveAgqsVH+0pOawJTOSD51tUTLj5awcgmblFX3b12mjDomOdOr4Hv5qmV043SK3JeUb/g/UsS1MfgsSTe9PGI2rkV1aQNSSy5US3QoAfU99R+9tMt2NNvfyCGFI4sXOnnSgx8hmZRE+sRo6hefj5nKDjUgOhLrbeXgWvbBnvbFbfNXIEHFyIqlzpLMKhj7JymhhH8yJVwNvIBo3bcyoxcVxQmFhtxJC3kPd+u1N+ZRdEOB2Lzoxn921WFJRPqBihi9InCJJHVuk08/ie+s3r3RR1vFh00=
+  app: malaria-visualiser
