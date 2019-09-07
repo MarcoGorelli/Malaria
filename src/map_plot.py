@@ -14,6 +14,12 @@ def make_figure(data, colours):
         hover_name="Entity",  # column to add to hover information
         color_continuous_scale=px.colors.sequential.Reds,
     ).to_dict()
+    world_map["layout"]["geo"]["domain"]["x"] = [0.0, 0.48]
+    world_map["layout"]["coloraxis"]["colorbar"]["x"] = 0
+    world_map["layout"]["coloraxis"]["colorbar"]["title"][
+        "text"
+    ] = "Deaths from malaria in 2015"
+    world_map["layout"]["coloraxis"]["colorbar"]["title"]["side"] = "bottom"
     world_map["layout"].update({"clickmode": "event+select"})
     world_map["layout"]["geo"]["scope"] = "africa"
     world_map["layout"]["geo"]["bgcolor"] = colours["background"]
