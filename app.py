@@ -12,12 +12,9 @@ from src.time_series_plot import update_time_series_plot
 from src.map_plot import make_figure
 
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
-
 APP = dash.Dash(__name__, external_stylesheets=EXTERNAL_STYLESHEETS)
 SERVER = APP.server
-
 COLOURS = {"background": "#111111", "text": "#7FDBFF"}
-
 
 APP.layout = html.Div(
     style={"backgroundColor": COLOURS["background"]},
@@ -34,7 +31,7 @@ APP.layout = html.Div(
             children=[
                 html.Div(
                     dcc.Graph(
-                        id="country",
+                        id="g1",
                         figure=make_figure(
                             DEATHS.query("Continent_Code == 'AF'")
                             .groupby("Code")
@@ -45,7 +42,7 @@ APP.layout = html.Div(
                     ),
                     className="six columns",
                 ),
-                html.Div(dcc.Graph(id="deaths-by-year"), className="six columns"),
+                html.Div(dcc.Graph(id="g2"), className="six columns"),
             ],
         ),
     ],
@@ -53,8 +50,8 @@ APP.layout = html.Div(
 
 
 @APP.callback(
-    Output(component_id="deaths-by-year", component_property="figure"),
-    [Input(component_id="country", component_property="clickData")],
+    Output(component_id="g2", component_property="figure"),
+    [Input(component_id="g1", component_property="clickData")],
 )
 def update_output_div(input_value):
     """Update times series plot based on country from country map which
@@ -65,7 +62,7 @@ def update_output_div(input_value):
 
 @APP.callback(
     Output(component_id="country_text", component_property="children"),
-    [Input(component_id="country", component_property="clickData")],
+    [Input(component_id="g1", component_property="clickData")],
 )
 def update_text(input_value):
     """Update text to reflect what's shown in the time series

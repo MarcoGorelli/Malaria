@@ -19,9 +19,11 @@ def update_time_series_plot(input_value, colours):
         country = "Zambia"
     else:
         country = input_value["points"][0]["hovertext"]
-    time_series = px.line(
-        plot_country_deaths_over_time(country), x="Year", y="Deaths by malaria"
-    ).to_dict()
+    time_series = (
+        px.line(plot_country_deaths_over_time(country), x="Year", y="Deaths by malaria")
+        .update_yaxes(showticklabels=False)
+        .to_dict()
+    )
     time_series["layout"]["template"]["layout"]["geo"]["bgcolor"] = colours[
         "background"
     ]
