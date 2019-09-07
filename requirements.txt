@@ -4,3 +4,4 @@ plotly
 dash
 dash-daq
 gunicorn
+black
