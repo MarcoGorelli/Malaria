@@ -12,7 +12,10 @@ from src.time_series_plot import update_time_series_plot
 from src.map_plot import make_figure
 
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
-APP = dash.Dash(__name__, external_stylesheets=EXTERNAL_STYLESHEETS)
+APP = dash.Dash("Malaria")
+APP.css.append_css({"external_url": "./static/reset.css"})
+APP.css.config.serve_locally = False
+APP.server.static_folder = "static"
 SERVER = APP.server
 COLOURS = {"background": "#111111", "text": "#7FDBFF"}
 
@@ -65,4 +68,4 @@ def update_output_div(input_value):
 
 
 if __name__ == "__main__":
-    APP.run_server(debug=True)
+    APP.run_server(debug=False)
