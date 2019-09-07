@@ -1,7 +1,7 @@
-flake8
-pandas
-plotly
-dash
-dash-daq
-gunicorn
-black
+flake8==3.7.7
+pandas==0.25.0
+plotly==4.1.0
+dash==1.1.1
+dash-daq==0.1.7
+gunicorn==19.9.0
+black==19.3
