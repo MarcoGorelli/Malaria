@@ -16,6 +16,13 @@ APP = dash.Dash(__name__, external_stylesheets=EXTERNAL_STYLESHEETS)
 SERVER = APP.server
 COLOURS = {"background": "#111111", "text": "#7FDBFF"}
 
+# maybe, here we can have a map of just Africa with no line graph as a constant
+# and then, have another function which determines how to update the other part
+# of that plot
+WORLD_MAP = make_figure(
+    DEATHS.query("Continent_Code == 'AF'").groupby("Code").last().reset_index(), COLOURS
+)
+
 APP.layout = html.Div(
     style={"backgroundColor": COLOURS["background"]},
     children=[
@@ -26,52 +33,35 @@ APP.layout = html.Div(
         html.Div(
             id="country_text", style={"textAlign": "center", "color": COLOURS["text"]}
         ),
-        html.Div(
-            className="row",
-            children=[
-                html.Div(
-                    dcc.Graph(
-                        id="g1",
-                        figure=make_figure(
-                            DEATHS.query("Continent_Code == 'AF'")
-                            .groupby("Code")
-                            .last()
-                            .reset_index(),
-                            COLOURS,
-                        ),
-                    ),
-                    className="six columns",
-                ),
-                html.Div(dcc.Graph(id="g2"), className="six columns"),
-            ],
-        ),
+        html.Div(id="plots", children=[dcc.Graph(id="plotly", figure=WORLD_MAP)]),
     ],
 )
 
 
 @APP.callback(
-    Output(component_id="g2", component_property="figure"),
-    [Input(component_id="g1", component_property="clickData")],
+    Output(component_id="plotly", component_property="figure"),
+    [Input(component_id="plotly", component_property="clickData")],
 )
 def update_output_div(input_value):
     """Update times series plot based on country from country map which
     user clicks on
     """
-    return update_time_series_plot(input_value, COLOURS)
+    print(input_value)
+    return update_time_series_plot(input_value, WORLD_MAP, COLOURS)
 
 
-@APP.callback(
-    Output(component_id="country_text", component_property="children"),
-    [Input(component_id="g1", component_property="clickData")],
-)
-def update_text(input_value):
-    """Update text to reflect what's shown in the time series
-    """
-    if not input_value:
-        country = "Zambia"
-    else:
-        country = input_value["points"][0]["hovertext"]
-    return f"In {country}"
+# @APP.callback(
+#     Output(component_id="country_text", component_property="children"),
+#     [Input(component_id="g2", component_property="clickData")],
+# )
+# def update_text(input_value):
+#     """Update text to reflect what's shown in the time series
+#     """
+#     if not input_value:
+#         country = "Zambia"
+#     else:
+#         country = input_value["points"][0]["hovertext"]
+#     return f"In {country}"
 
 
 if __name__ == "__main__":
