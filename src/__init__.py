@@ -1,4 +1,9 @@
+"""Import data to be used in plots
+"""
+
 import pandas as pd
+
+print("Welcome to malaria-visualiser!")
 
 DEATHS = pd.read_csv("data/malaria-deaths-by-region.csv").rename(
     {
