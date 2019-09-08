@@ -2,6 +2,8 @@
 country user clicks on
 """
 
+import argparse
+
 import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
@@ -71,7 +73,7 @@ def update_text(input_value: dict) -> str:
     """Update text to reflect what's shown in the time series
     """
     if not input_value:
-        return "Select country"
+        return "Click on a country!"
     if "location" not in input_value["points"][0]:
         return "if you're this, it's a bug"
     country = input_value["points"][0]["hovertext"]
@@ -79,4 +81,13 @@ def update_text(input_value: dict) -> str:
 
 
 if __name__ == "__main__":
-    APP.run_server(debug=True)
+    PARSER = argparse.ArgumentParser(description="Should the app run in debug mode?")
+    PARSER.add_argument(
+        "--debug",
+        type=bool,
+        help="Pass False to not run in debug mode",
+        required=False,
+        default=False,
+    )
+    ARGS = PARSER.parse_args()
+    APP.run_server(debug=ARGS.debug)
