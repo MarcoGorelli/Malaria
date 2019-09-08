@@ -8,21 +8,23 @@ import plotly.express as px
 from src import DEATHS
 
 
-def plot_country_deaths_over_time(country):
+def plot_country_deaths_over_time(code):
     """Select data (from all years) for given country.
     """
-    return DEATHS.query("Entity == '{}'".format(country))[["Year", "Deaths by malaria"]]
+    return DEATHS.query("Code == '{}'".format(code))[["Year", "Deaths by malaria"]]
 
 
 def update_time_series_plot(input_value, original_map, colours):
     """Update time series plot based on user's new click
     """
     if not input_value:
-        country = "Zambia"
-    else:
-        country = input_value["points"][0]["hovertext"]
+        return original_map
+    if not "location" in input_value["points"][0]:
+        return original_map
+
+    code = input_value["points"][0]["location"]
     time_series = (
-        px.line(plot_country_deaths_over_time(country), x="Year", y="Deaths by malaria")
+        px.line(plot_country_deaths_over_time(code), x="Year", y="Deaths by malaria")
         .update_yaxes(showticklabels=False)
         .to_dict()
     )

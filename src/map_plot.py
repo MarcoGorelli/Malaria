@@ -18,9 +18,9 @@ def make_figure(data, colours):
     world_map["layout"]["coloraxis"]["colorbar"]["x"] = 0
     world_map["layout"]["coloraxis"]["colorbar"]["title"][
         "text"
-    ] = "Deaths from malaria in 2015"
+    ] = "Deaths from malaria in 2017"
     world_map["layout"]["coloraxis"]["colorbar"]["title"]["side"] = "bottom"
-    world_map["layout"].update({"clickmode": "event+select"})
+    world_map["layout"]["geo"]["clickmode"] = "event+select"
     world_map["layout"]["geo"]["scope"] = "africa"
     world_map["layout"]["geo"]["bgcolor"] = colours["background"]
     world_map["layout"]["geo"]["lakecolor"] = "aqua"

@@ -30,13 +30,22 @@ APP.layout = html.Div(
     style={"backgroundColor": COLOURS["background"]},
     children=[
         html.H1(
-            children="Deaths by Malaria",
+            children="Deaths from Malaria",
             style={"textAlign": "center", "color": COLOURS["text"]},
         ),
         html.Div(
-            id="country_text", style={"textAlign": "center", "color": COLOURS["text"]}
+            "Click on a country from the map on the left to see how"
+            " deaths from malaria have changed there over time. Hover over graph"
+            " on the right to see numbers for each year",
+            style={"textAlign": "center", "color": COLOURS["text"]},
         ),
         html.Div(id="plots", children=[dcc.Graph(id="plotly", figure=WORLD_MAP)]),
+        html.A(
+            "Source code",
+            href="https://github.com/MarcoGorelli/Malaria",
+            target="_blank",
+            style={"textAlign": "center", "color": COLOURS["text"]},
+        ),
     ],
 )
 
@@ -53,19 +62,5 @@ def update_output_div(input_value):
     return update_time_series_plot(input_value, WORLD_MAP, COLOURS)
 
 
-# @APP.callback(
-#     Output(component_id="country_text", component_property="children"),
-#     [Input(component_id="g2", component_property="clickData")],
-# )
-# def update_text(input_value):
-#     """Update text to reflect what's shown in the time series
-#     """
-#     if not input_value:
-#         country = "Zambia"
-#     else:
-#         country = input_value["points"][0]["hovertext"]
-#     return f"In {country}"
-
-
 if __name__ == "__main__":
-    APP.run_server(debug=False)
+    APP.run_server(debug=True)
