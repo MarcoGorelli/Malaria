@@ -33,12 +33,7 @@ APP.layout = html.Div(
             children="Deaths from Malaria",
             style={"textAlign": "center", "color": COLOURS["text"]},
         ),
-        html.Div(
-            "Click on a country from the map on the left to see how"
-            " deaths from malaria have changed there over time. Hover over graph"
-            " on the right to see numbers for each year",
-            style={"textAlign": "center", "color": COLOURS["text"]},
-        ),
+        html.H2(id="Country text"),
         html.Div(id="plots", children=[dcc.Graph(id="plotly", figure=WORLD_MAP)]),
         html.A(
             "Source code",
@@ -60,6 +55,35 @@ def update_output_div(input_value):
     """
     print(input_value)
     return update_time_series_plot(input_value, WORLD_MAP, COLOURS)
+
+
+@APP.callback(
+    Output(component_id="Country text", component_property="children"),
+    [Input(component_id="plotly", component_property="clickData")],
+)
+def update_text(input_value):
+    """Update text to reflect what's shown in the time series
+    """
+    if not input_value:
+        return "click on map!"
+    if "location" not in input_value["points"][0]:
+        return "oops"
+    country = input_value["points"][0]["hovertext"]
+    return country
+
+
+@APP.callback(
+    Output(component_id="Country text", component_property="style"),
+    [Input(component_id="plotly", component_property="clickData")],
+)
+def update_style(input_value):
+    """Update text to reflect what's shown in the time series
+    """
+    if not input_value:
+        return {"textAlign": "center", "color": COLOURS["background"]}
+    if "location" not in input_value["points"][0]:
+        return {"textAlign": "center", "color": COLOURS["background"]}
+    return {"textAlign": "center", "color": COLOURS["text"]}
 
 
 if __name__ == "__main__":

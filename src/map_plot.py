@@ -26,4 +26,5 @@ def make_figure(data, colours):
     world_map["layout"]["geo"]["lakecolor"] = "aqua"
     world_map["layout"]["paper_bgcolor"] = colours["background"]
     world_map["layout"]["template"]["layout"]["font"]["color"] = colours["text"]
+    world_map["layout"]["title"] = {"text": "Click me!", "x": 0.25}
     return world_map
