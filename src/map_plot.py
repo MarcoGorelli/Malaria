@@ -1,10 +1,10 @@
 """Make map so user can select country by clicking on it
 """
-
+import pandas as pd
 import plotly.express as px
 
 
-def make_figure(data, colours):
+def make_figure(data: pd.DataFrame, colours: dict) -> dict:
     """Make dict that be used to display plotly figure, which captures user clicks
     """
     world_map = px.choropleth(

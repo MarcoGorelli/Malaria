@@ -49,7 +49,7 @@ APP.layout = html.Div(
     Output(component_id="plotly", component_property="figure"),
     [Input(component_id="plotly", component_property="clickData")],
 )
-def update_output_div(input_value):
+def update_output_div(input_value: dict) -> dict:
     """Update times series plot based on country from country map which
     user clicks on
     """
@@ -61,7 +61,7 @@ def update_output_div(input_value):
     Output(component_id="Country text", component_property="children"),
     [Input(component_id="plotly", component_property="clickData")],
 )
-def update_text(input_value):
+def update_text(input_value: dict) -> str:
     """Update text to reflect what's shown in the time series
     """
     if not input_value:
@@ -76,7 +76,7 @@ def update_text(input_value):
     Output(component_id="Country text", component_property="style"),
     [Input(component_id="plotly", component_property="clickData")],
 )
-def update_style(input_value):
+def update_style(input_value: dict) -> dict:
     """Update text to reflect what's shown in the time series
     """
     if not input_value:
@@ -87,4 +87,4 @@ def update_style(input_value):
 
 
 if __name__ == "__main__":
-    APP.run_server(debug=True)
+    APP.run_server(debug=False)

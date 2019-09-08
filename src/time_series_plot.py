@@ -4,17 +4,20 @@
 import copy
 
 import plotly.express as px
+import pandas as pd
 
 from src import DEATHS
 
 
-def plot_country_deaths_over_time(code):
+def plot_country_deaths_over_time(code: str) -> pd.DataFrame:
     """Select data (from all years) for given country.
     """
     return DEATHS.query("Code == '{}'".format(code))[["Year", "Deaths by malaria"]]
 
 
-def update_time_series_plot(input_value, original_map, colours):
+def update_time_series_plot(
+    input_value: dict, original_map: dict, colours: dict
+) -> dict:
     """Update time series plot based on user's new click
     """
     if not input_value:

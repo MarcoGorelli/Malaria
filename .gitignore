@@ -4,3 +4,4 @@
 raw.txt
 notebooks/
 all_reqs.txt
+.mypy_cache
