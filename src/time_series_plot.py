@@ -26,6 +26,13 @@ def update_time_series_plot(
         return original_map
 
     code = input_value["points"][0]["location"]
+    if is_same_country(code, original_map):
+        original_map["data"][0]["name"] = ""
+        original_map["data"] = [original_map["data"][0]]
+        return original_map
+
+    original_map["data"][0]["name"] = code  # keep track of current country
+
     time_series = (
         px.line(plot_country_deaths_over_time(code), x="Year", y="Deaths by malaria")
         .update_yaxes(showticklabels=False)
@@ -33,21 +40,18 @@ def update_time_series_plot(
     )
     original_map = copy.deepcopy(original_map)
     original_map["data"].append(time_series["data"][0])
-    original_map["layout"]["xaxis"] = {"domain": [0.52, 0.98]}
-    original_map["layout"]["yaxis"] = {}
-    original_map["layout"]["template"]["layout"]["geo"]["bgcolor"] = colours[
-        "background"
-    ]
-    original_map["layout"]["template"]["layout"]["paper_bgcolor"] = colours[
-        "background"
-    ]
-    original_map["layout"]["template"]["layout"]["font"]["color"] = colours["text"]
-    original_map["layout"]["xaxis"]["showgrid"] = False
-    original_map["layout"]["yaxis"]["showgrid"] = False
-    original_map["layout"]["plot_bgcolor"] = colours["background"]
+
     for data in original_map["data"]:
         if "line" in data:
             data["line"]["color"] = colours["text"]
     # original_map["layout"]["xaxis"]["title"] = {"text": ""}
     # original_map["layout"]["yaxis"]["title"]["text"] = ""
     return original_map
+
+
+def is_same_country(code: str, original_map: dict) -> bool:
+    """Check whether user has click on same country twice
+    """
+    if not original_map["data"][0]["name"]:
+        return False
+    return code == original_map["data"][0]["name"]

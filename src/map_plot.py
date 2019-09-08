@@ -27,4 +27,13 @@ def make_figure(data: pd.DataFrame, colours: dict) -> dict:
     world_map["layout"]["paper_bgcolor"] = colours["background"]
     world_map["layout"]["template"]["layout"]["font"]["color"] = colours["text"]
     world_map["layout"]["title"] = {"text": "Click me!", "x": 0.25}
+    world_map["layout"]["xaxis"] = {"domain": [0.52, 0.98]}
+    world_map["layout"]["yaxis"] = {}
+    world_map["layout"]["template"]["layout"]["geo"]["bgcolor"] = colours["background"]
+    world_map["layout"]["template"]["layout"]["paper_bgcolor"] = colours["background"]
+    world_map["layout"]["template"]["layout"]["font"]["color"] = colours["text"]
+    world_map["layout"]["xaxis"]["showgrid"] = False
+    world_map["layout"]["yaxis"]["showgrid"] = False
+    world_map["layout"]["plot_bgcolor"] = colours["background"]
+
     return world_map

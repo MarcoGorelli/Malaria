@@ -19,9 +19,6 @@ APP.server.static_folder = "static"
 SERVER = APP.server
 COLOURS = {"background": "#111111", "text": "#7FDBFF"}
 
-# maybe, here we can have a map of just Africa with no line graph as a constant
-# and then, have another function which determines how to update the other part
-# of that plot
 WORLD_MAP = make_figure(
     DEATHS.query("Continent_Code == 'AF'").groupby("Code").last().reset_index(), COLOURS
 )
@@ -33,8 +30,17 @@ APP.layout = html.Div(
             children="Deaths from Malaria",
             style={"textAlign": "center", "color": COLOURS["text"]},
         ),
-        html.H2(id="Country text"),
-        html.Div(id="plots", children=[dcc.Graph(id="plotly", figure=WORLD_MAP)]),
+        html.H2(
+            id="Country text", style={"textAlign": "center", "color": COLOURS["text"]}
+        ),
+        html.Div(
+            id="plots",
+            children=[
+                dcc.Graph(
+                    id="plotly", figure=WORLD_MAP, config={"displayModeBar": False}
+                )
+            ],
+        ),
         html.A(
             "Source code",
             href="https://github.com/MarcoGorelli/Malaria",
@@ -65,26 +71,12 @@ def update_text(input_value: dict) -> str:
     """Update text to reflect what's shown in the time series
     """
     if not input_value:
-        return "click on map!"
+        return "Select country"
     if "location" not in input_value["points"][0]:
-        return "oops"
+        return "if you're this, it's a bug"
     country = input_value["points"][0]["hovertext"]
     return country
 
 
-@APP.callback(
-    Output(component_id="Country text", component_property="style"),
-    [Input(component_id="plotly", component_property="clickData")],
-)
-def update_style(input_value: dict) -> dict:
-    """Update text to reflect what's shown in the time series
-    """
-    if not input_value:
-        return {"textAlign": "center", "color": COLOURS["background"]}
-    if "location" not in input_value["points"][0]:
-        return {"textAlign": "center", "color": COLOURS["background"]}
-    return {"textAlign": "center", "color": COLOURS["text"]}
-
-
 if __name__ == "__main__":
-    APP.run_server(debug=False)
+    APP.run_server(debug=True)
