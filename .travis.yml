@@ -4,10 +4,11 @@ python:
 cache: pip
 install:
 - pip install -r requirements.txt
-script:
-- flake8 --max-line-length=100
-- black src --check
-- pylint src app.py
+
+static analysis:
+  provider: script
+  script: bash scripts/static_analysis.sh
+
 deploy:
   provider: heroku
   api_key:
