@@ -33,19 +33,21 @@ def update_time_series_plot(
 
     original_map["data"][0]["name"] = code  # keep track of current country
 
-    time_series = (
-        px.line(plot_country_deaths_over_time(code), x="Year", y="Deaths by malaria")
-        .update_yaxes(showticklabels=False)
-        .to_dict()
-    )
+    time_series = px.line(
+        plot_country_deaths_over_time(code), x="Year", y="Deaths by malaria"
+    ).to_dict()
     original_map = copy.deepcopy(original_map)
     original_map["data"].append(time_series["data"][0])
 
     for data in original_map["data"]:
         if "line" in data:
             data["line"]["color"] = colours["text"]
-    # original_map["layout"]["xaxis"]["title"] = {"text": ""}
-    # original_map["layout"]["yaxis"]["title"]["text"] = ""
+    original_map["layout"]["xaxis"]["title"] = {"text": "Year"}
+    original_map["layout"]["yaxis"] = {
+        "ticks": "",
+        "showgrid": False,
+        "showticklabels": False,
+    }
     return original_map
 
 
