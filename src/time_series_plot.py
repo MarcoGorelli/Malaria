@@ -19,7 +19,7 @@ def update_time_series_plot(input_value, original_map, colours):
     """
     if not input_value:
         return original_map
-    if not "location" in input_value["points"][0]:
+    if "location" not in input_value["points"][0]:
         return original_map
 
     code = input_value["points"][0]["location"]
