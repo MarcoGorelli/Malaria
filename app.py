@@ -3,18 +3,18 @@ country user clicks on
 """
 
 import argparse
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 import dash
-from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 import flask
+from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
-from src import DEATHS
-from src.time_series_plot import update_time_series_plot
+from src import COLOURS, DEATHS
 from src.map_plot import make_figure
+from src.time_series_plot import update_time_series_plot
 
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 APP = dash.Dash("Malaria")
@@ -22,7 +22,6 @@ APP.css.append_css({"external_url": "./static/reset.css"})
 APP.css.config.serve_locally = False
 APP.server.static_folder = "static"
 SERVER: flask.app.Flask = APP.server
-COLOURS = {"background": "#111111", "text": "#7FDBFF"}
 
 WORLD_MAP: Dict[str, Any] = make_figure(
     DEATHS.query("Continent_Code == 'AF'").groupby("Code").last().reset_index(), COLOURS
@@ -69,7 +68,7 @@ def update_output_div(input_value: Dict[str, List]) -> Dict[str, Any]:
         raise PreventUpdate()
     if "location" not in input_value["points"][0]:
         raise PreventUpdate()
-    new_plot: Dict[str, Any] = update_time_series_plot(input_value, WORLD_MAP, COLOURS)
+    new_plot: Dict[str, Any] = update_time_series_plot(input_value, WORLD_MAP)
     from pprint import pprint
 
     pprint(new_plot)

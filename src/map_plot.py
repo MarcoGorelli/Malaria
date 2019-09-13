@@ -1,9 +1,11 @@
 """Make map so user can select country by clicking on it
 """
-from typing import Dict, Any
+from typing import Any, Dict
 
 import pandas as pd
 import plotly.express as px
+
+from src import TIME_SERIES
 
 
 def make_figure(data: pd.DataFrame, colours: Dict[str, str]) -> Dict[str, Any]:
@@ -17,6 +19,9 @@ def make_figure(data: pd.DataFrame, colours: Dict[str, str]) -> Dict[str, Any]:
         color_continuous_scale=px.colors.sequential.Reds,
     ).to_dict()
     world_map["layout"]["geo"]["domain"]["x"] = [0.0, 0.48]
+    world_map["data"][0][
+        "hovertemplate"
+    ] = "<b>%{hovertext}</b><br>Deaths from malaria=%{z}"
     world_map["layout"]["coloraxis"]["colorbar"]["x"] = 0
     world_map["layout"]["coloraxis"]["colorbar"]["title"][
         "text"
@@ -36,5 +41,6 @@ def make_figure(data: pd.DataFrame, colours: Dict[str, str]) -> Dict[str, Any]:
     world_map["layout"]["xaxis"]["showgrid"] = False
     world_map["layout"]["yaxis"]["showgrid"] = False
     world_map["layout"]["plot_bgcolor"] = colours["background"]
+    world_map["layout"].update(TIME_SERIES["layout"])
 
     return world_map
