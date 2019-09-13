@@ -11,7 +11,7 @@ def make_deaths_df():
     """
     deaths: pd.DataFrame = pd.read_csv("data/malaria-deaths-by-region.csv").rename(
         {
-            "Deaths - Malaria - Sex: Both - Age: All Ages (Number) (deaths)": "Deaths by malaria"
+            "Deaths - Malaria - Sex: Both - Age: All Ages (Number) (deaths)": "Deaths from malaria"
         },
         axis=1,
     )
@@ -25,3 +25,12 @@ def make_deaths_df():
 
 
 DEATHS: pd.DataFrame = make_deaths_df()
+
+COLOURS = {"background": "#111111", "text": "#7FDBFF"}
+
+TIME_SERIES = {
+    "layout": {
+        "xaxis": {"domain": [0.52, 0.98], "showgrid": False, "title": {"text": "Year"}},
+        "yaxis": {"showgrid": False, "showticklabels": False, "ticks": ""},
+    }
+}
