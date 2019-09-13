@@ -12,7 +12,7 @@ def make_figure(data: pd.DataFrame, colours: Dict[str, str]) -> Dict[str, Any]:
     world_map = px.choropleth(
         data,
         locations="Code",
-        color="Deaths by malaria",
+        color="Deaths from malaria",
         hover_name="Entity",  # column to add to hover information
         color_continuous_scale=px.colors.sequential.Reds,
     ).to_dict()
@@ -28,7 +28,6 @@ def make_figure(data: pd.DataFrame, colours: Dict[str, str]) -> Dict[str, Any]:
     world_map["layout"]["geo"]["lakecolor"] = "aqua"
     world_map["layout"]["paper_bgcolor"] = colours["background"]
     world_map["layout"]["template"]["layout"]["font"]["color"] = colours["text"]
-    world_map["layout"]["title"] = {"text": "Click me!", "x": 0.25}
     world_map["layout"]["xaxis"] = {"domain": [0.52, 0.98]}
     world_map["layout"]["yaxis"] = {}
     world_map["layout"]["template"]["layout"]["geo"]["bgcolor"] = colours["background"]

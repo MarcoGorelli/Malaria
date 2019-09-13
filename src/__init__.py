@@ -11,7 +11,7 @@ def make_deaths_df():
     """
     deaths: pd.DataFrame = pd.read_csv("data/malaria-deaths-by-region.csv").rename(
         {
-            "Deaths - Malaria - Sex: Both - Age: All Ages (Number) (deaths)": "Deaths by malaria"
+            "Deaths - Malaria - Sex: Both - Age: All Ages (Number) (deaths)": "Deaths from malaria"
         },
         axis=1,
     )

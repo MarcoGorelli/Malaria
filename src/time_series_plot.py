@@ -2,6 +2,7 @@
 """
 
 import copy
+from typing import Dict, Any, List
 
 import plotly.express as px
 import pandas as pd
@@ -12,19 +13,17 @@ from src import DEATHS
 def plot_country_deaths_over_time(code: str) -> pd.DataFrame:
     """Select data (from all years) for given country.
     """
-    return DEATHS.query("Code == '{}'".format(code))[["Year", "Deaths by malaria"]]
+    result: pd.DataFrame = DEATHS.query("Code == '{}'".format(code))[
+        ["Year", "Deaths from malaria"]
+    ]
+    return result
 
 
 def update_time_series_plot(
-    input_value: dict, original_map: dict, colours: dict
-) -> dict:
+    input_value: Dict[str, List], original_map: Dict[str, Any], colours: Dict[str, str]
+) -> Dict[str, Any]:
     """Update time series plot based on user's new click
     """
-    if not input_value:
-        return original_map
-    if "location" not in input_value["points"][0]:
-        return original_map
-
     code = input_value["points"][0]["location"]
     if is_same_country(code, original_map):
         original_map["data"][0]["name"] = ""
@@ -34,7 +33,7 @@ def update_time_series_plot(
     original_map["data"][0]["name"] = code  # keep track of current country
 
     time_series = px.line(
-        plot_country_deaths_over_time(code), x="Year", y="Deaths by malaria"
+        plot_country_deaths_over_time(code), x="Year", y="Deaths from malaria"
     ).to_dict()
     original_map = copy.deepcopy(original_map)
     original_map["data"].append(time_series["data"][0])
@@ -51,8 +50,8 @@ def update_time_series_plot(
     return original_map
 
 
-def is_same_country(code: str, original_map: dict) -> bool:
-    """Check whether user has click on same country twice
+def is_same_country(code: str, original_map: Dict[str, Any]) -> bool:
+    """Check whether user has clicked on same country twice
     """
     if not original_map["data"][0]["name"]:
         return False

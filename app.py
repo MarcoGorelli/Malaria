@@ -3,19 +3,18 @@ country user clicks on
 """
 
 import argparse
-from typing import Dict, List, Any, TYPE_CHECKING
+from typing import Dict, List, Any
 
 import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
+import flask
+from dash.exceptions import PreventUpdate
 
 from src import DEATHS
 from src.time_series_plot import update_time_series_plot
 from src.map_plot import make_figure
-
-if TYPE_CHECKING:
-    import flask  # noqa
 
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 APP = dash.Dash("Malaria")
@@ -65,7 +64,16 @@ def update_output_div(input_value: Dict[str, List]) -> Dict[str, Any]:
     """Update times series plot based on country from country map which
     user clicks on
     """
-    return update_time_series_plot(input_value, WORLD_MAP, COLOURS)
+    print(input_value)
+    if not input_value:
+        raise PreventUpdate()
+    if "location" not in input_value["points"][0]:
+        raise PreventUpdate()
+    new_plot: Dict[str, Any] = update_time_series_plot(input_value, WORLD_MAP, COLOURS)
+    from pprint import pprint
+
+    pprint(new_plot)
+    return new_plot
 
 
 @APP.callback(
@@ -78,8 +86,8 @@ def update_text(input_value: Dict[str, List]) -> str:
     if not input_value:
         return "Click on a country!"
     if "location" not in input_value["points"][0]:
-        return "if you're this, it's a bug"
-    country = input_value["points"][0]["hovertext"]
+        raise PreventUpdate()
+    country: str = input_value["points"][0]["hovertext"]
     return country
 
 
