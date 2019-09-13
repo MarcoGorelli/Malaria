@@ -3,6 +3,7 @@ country user clicks on
 """
 
 import argparse
+from typing import Dict, List, Any, TYPE_CHECKING
 
 import dash
 from dash.dependencies import Input, Output
@@ -13,15 +14,18 @@ from src import DEATHS
 from src.time_series_plot import update_time_series_plot
 from src.map_plot import make_figure
 
+if TYPE_CHECKING:
+    import flask  # noqa
+
 EXTERNAL_STYLESHEETS = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 APP = dash.Dash("Malaria")
 APP.css.append_css({"external_url": "./static/reset.css"})
 APP.css.config.serve_locally = False
 APP.server.static_folder = "static"
-SERVER = APP.server
+SERVER: flask.app.Flask = APP.server
 COLOURS = {"background": "#111111", "text": "#7FDBFF"}
 
-WORLD_MAP = make_figure(
+WORLD_MAP: Dict[str, Any] = make_figure(
     DEATHS.query("Continent_Code == 'AF'").groupby("Code").last().reset_index(), COLOURS
 )
 
@@ -57,11 +61,10 @@ APP.layout = html.Div(
     Output(component_id="plotly", component_property="figure"),
     [Input(component_id="plotly", component_property="clickData")],
 )
-def update_output_div(input_value: dict) -> dict:
+def update_output_div(input_value: Dict[str, List]) -> Dict[str, Any]:
     """Update times series plot based on country from country map which
     user clicks on
     """
-    print(input_value)
     return update_time_series_plot(input_value, WORLD_MAP, COLOURS)
 
 
@@ -69,7 +72,7 @@ def update_output_div(input_value: dict) -> dict:
     Output(component_id="Country text", component_property="children"),
     [Input(component_id="plotly", component_property="clickData")],
 )
-def update_text(input_value: dict) -> str:
+def update_text(input_value: Dict[str, List]) -> str:
     """Update text to reflect what's shown in the time series
     """
     if not input_value:
@@ -89,5 +92,5 @@ if __name__ == "__main__":
         required=False,
         default=False,
     )
-    ARGS = PARSER.parse_args()
+    ARGS: argparse.Namespace = PARSER.parse_args()
     APP.run_server(debug=ARGS.debug)
