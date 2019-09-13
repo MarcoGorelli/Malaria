@@ -24,4 +24,4 @@ def make_deaths_df():
     return deaths
 
 
-DEATHS = make_deaths_df()
+DEATHS: pd.DataFrame = make_deaths_df()
