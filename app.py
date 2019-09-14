@@ -12,7 +12,7 @@ import flask
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
-from src import COLOURS, DEATHS
+from src import COLOURS
 from src.map_plot import make_figure
 from src.time_series_plot import update_time_series_plot
 
@@ -23,9 +23,7 @@ APP.css.config.serve_locally = False
 APP.server.static_folder = "static"
 SERVER: flask.app.Flask = APP.server
 
-WORLD_MAP: Dict[str, Any] = make_figure(
-    DEATHS.query("Continent_Code == 'AF'").groupby("Code").last().reset_index(), COLOURS
-)
+WORLD_MAP: Dict[str, Any] = make_figure()
 
 APP.layout = html.Div(
     style={"backgroundColor": COLOURS["background"]},
@@ -45,11 +43,25 @@ APP.layout = html.Div(
                 )
             ],
         ),
-        html.A(
-            "Source code",
-            href="https://github.com/MarcoGorelli/Malaria",
-            target="_blank",
-            style={"textAlign": "center", "color": COLOURS["text"]},
+        html.Div(
+            html.A(
+                "Source code\n",
+                href="https://github.com/MarcoGorelli/Malaria",
+                target="_blank",
+                style={"textAlign": "center", "color": COLOURS["text"]},
+            )
+        ),
+        html.Div(
+            [
+                "Data from ",
+                html.A(
+                    "Our World In Data",
+                    href="https://ourworldindata.org/malaria",
+                    target="_blank",
+                    style={"textAlign": "center", "color": COLOURS["text"]},
+                ),
+            ],
+            style={"textAlign": "left", "color": COLOURS["text"]},
         ),
     ],
 )
