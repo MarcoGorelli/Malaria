@@ -1,4 +1,6 @@
 """Import data to be used in plots
+
+Data comes from https://ourworldindata.org/malaria
 """
 
 import pandas as pd
